@@ -2,6 +2,8 @@ package br.com.caelum.leilao.servico;
 
 import br.com.caelum.leilao.builder.CriadorDeLeilao;
 import br.com.caelum.leilao.dominio.Leilao;
+import br.com.caelum.leilao.infra.dao.LeilaoDao;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -18,5 +20,15 @@ public class EncerradorDeLeilaoTeste {
 
         Leilao leilao = new CriadorDeLeilao().para("TV de plasma").naData(antiga).constroi();
         Leilao leilao2 = new CriadorDeLeilao().para("Geladeira").naData(antiga).constroi();
+
+        LeilaoDao dao = new LeilaoDao();
+        dao.salva(leilao);
+        dao.salva(leilao2);
+
+        EncerradorDeLeilao encerradorDeLeilao = new EncerradorDeLeilao();
+        encerradorDeLeilao.encerra();
+
+        Assert.assertTrue(leilao.isEncerrado());
+        Assert.assertTrue(leilao2.isEncerrado());
     }
 }
